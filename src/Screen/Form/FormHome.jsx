@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -10,30 +10,45 @@ import {
   Container,
   Grid,
   GridItem,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import FormContext from "../../Context/form/FormContext";
 
 function FormHome() {
+  const FormState = useContext(FormContext);
+  const { GetRecentForms, recentForms} = FormState;
   const navigate = useNavigate();
-  
-  const CreateNewForm = () => {
-    let formId = localStorage.getItem("formId");
+
+  useEffect(() => {
+    const formId = localStorage.getItem("formId");
     if (formId) {
       localStorage.removeItem("formId");
+      localStorage.removeItem("object");
+      localStorage.removeItem("filled");
     }
+    GetRecentForms();
+  }, []);
+
+  const CreateNewForm = () => {
+    navigate("/formpage");
+  };
+
+  const OpenRecentForm = (formId) => {
+    localStorage.setItem("formId", formId);
     navigate("/formpage");
   };
 
   return (
     <>
-      <Box width={"100%"} height={250} bg={"blackAlpha.100"}>
+      <Box width={"100%"} height={300} bg={"blackAlpha.100"}>
         <Flex
           flexDirection={"row"}
           justifyContent={"center"}
           alignItems={"center"}
           height={"100%"}
         >
-          <Card width={"15%"}>
+          <Card width={"250px"}>
             <Text m={1} textAlign={"center"}>
               Create new form
             </Text>
@@ -43,7 +58,7 @@ function FormHome() {
                   CreateNewForm();
                 }}
                 style={{ fontSize: "60px" }}
-                class="bi bi-file-plus"
+                className="bi bi-file-plus"
               ></i>
             </CardBody>
             <Text m={1} textAlign={"center"}>
@@ -53,39 +68,32 @@ function FormHome() {
         </Flex>
       </Box>
       <Box>
-        <Text marginLeft={5}>Recent Form</Text>
-        <Grid templateColumns="repeat(5, 1fr)" gap={6} m={5}>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form1
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form2
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form3
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form3
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form3
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form3
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form3
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form3
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form3
-          </GridItem>
-          <GridItem w="100%" h="150" bg="blue.500">
-            Form3
-          </GridItem>
-        </Grid>
+        <Text m={5}>Recent Form</Text>
+        <SimpleGrid minChildWidth={'200px'} spacing={2} >
+          {recentForms.length > 0 &&
+            recentForms.map((form,index) => {
+              return (
+                <Box
+                 m={2}
+                  key={index}
+                  h="300"
+                  bg="blue.500"
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Button
+                    m={2}
+                    onClick={() => {
+                      OpenRecentForm(form._id);
+                    }}
+                  >
+                    {form.Name}
+                  </Button>
+                </Box>
+              );
+            })}
+        </SimpleGrid>
       </Box>
     </>
   );

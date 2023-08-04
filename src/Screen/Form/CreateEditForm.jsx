@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormContext from "../../Context/form/FormContext";
+import axios from "axios";
 
 import {
   Center,
@@ -16,107 +17,126 @@ import {
   Box,
   Button,
   Input,
+  useMediaQuery,
 } from "@chakra-ui/react";
 
 import FormHeader from "./Component/FormHeader";
 
 function CreateEditForm() {
   const FormState = useContext(FormContext);
-  const { UpdateForm, CreateForm, GetFormDataById, currentObjFilled } =
-    FormState;
+  const { UpdateForm, CreateForm } = FormState;
   const navigate = useNavigate();
   const screens = ["formpage", "formresponse", "formsettings"];
   const [currentscreen, setCurrentscreen] = useState("formpage");
+  const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const [maxwidth, setMaxwidth] = useState("");
 
-  const [fields, setFields] = useState([
-    {
-      Question: "Question",
-      ResponseType: "text",
-      Options: [],
-      file: null,
-      FileType: "",
-      MaxLength: "",
-      MaxSize: "",
-      Value: "",
-    },
-  ]);
+  const [sendData, setSendData] = useState({});
 
-  const [Obj, setObj] = useState({
-    name: "name",
-    title: "untitle form",
-    description: "undescription form",
-  });
-
-  
-  //Useeffected Function--------------------------------
   useEffect(() => {
-    let formId = localStorage.getItem("formId");
-    if (formId) {
-      GetFormDataById(formId);
-      if (currentObjFilled.FormData) {
-      let TempData=currentObjFilled;
-        let data = {
-          name: TempData.Name,
-          title: TempData.Title,
-          description: currentObjFilled.Description,
-        };
-        setObj(data);
-        setFields(JSON.parse(currentObjFilled.FormData));
-        console.log("Current Object Filled: ", currentObjFilled);
+    if (isSmallerThan1024) {
+      if (maxwidth === "38%") {
+        setMaxwidth("90%");
       }
     } else {
-      setFields([
-        {
-          Question: "Question",
-          ResponseType: "text",
-          Options: [],
-          file: null,
-          FileType: "",
-          MaxLength: "",
-          MaxSize: "",
-          Value: "",
-        },
-      ]);
-      setObj({
-        name: "name",
-        title: "untitle form",
-        description: "undescription form",
-      });
+      setMaxwidth("38%");
     }
-  }, []);
+  }, [isSmallerThan1024]);
+
+  useEffect(() => {
+    const formId = localStorage.getItem("formId");
+    if (formId) {
+      const endpointUrl = `http://localhost:5000/form/getbyid/${formId}`;
+      const token = localStorage.getItem("token");
+      if (Object.keys(sendData).length == 0) {
+        console.log("api calling");
+        const headers = {
+          "auth-token": token,
+          "Content-Type": "application/json",
+        };
+        axios
+          .get(endpointUrl, { headers })
+          .then((response) => {
+            console.log(response.data.data);
+            setSendData(response.data.data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    } else {
+      if (Object.keys(sendData).length == 0) {
+        setSendData({
+          Obj: {
+            name: "unknown name",
+            title: "unknown title",
+            description: "unknown description",
+          },
+          fields: [
+            {
+              Question: "",
+              ResponseType: "",
+              Options: [],
+              file: null,
+              FileType: "",
+              MaxLength: "",
+              MaxSize: "",
+              Value: "",
+            },
+          ],
+        });
+      }
+    }
+  }, [sendData]);
 
   const handleOnChangeObj = (event) => {
     const { name, value } = event.target;
-    setObj((prevObject) => ({
-      ...prevObject,
-      [name]: value,
+
+    setSendData((prevState) => ({
+      ...prevState,
+      Obj: {
+        ...prevState.Obj,
+        [name]: value,
+      },
     }));
   };
 
   const handleChange = (index, event) => {
     event.preventDefault();
     const { name, value, type } = event.target;
-    const newFields = [...fields];
-    if (type === "file") {
-      // Handle file uploads for file type fields
-      newFields[index][name] = event.target.files[0];
-    } else {
-      newFields[index][name] = value;
-    }
-    setFields(newFields);
+
+    setSendData((prevState) => {
+      const newFields = [...prevState.fields];
+      newFields[index].name = value;
+      if (type === "file") {
+        newFields[index][name] = event.target.files[0];
+      } else {
+        newFields[index][name] = value;
+      }
+
+      return {
+        ...prevState,
+        fields: newFields,
+      };
+    });
   };
 
   const handleOptionChange = (index, optionIndex, event) => {
     const { value } = event.target;
-    const newFields = [...fields];
-    newFields[index].Options[optionIndex] = value;
-    setFields(newFields);
+    setSendData((prevState) => {
+      const newFields = [...prevState.fields];
+      newFields[index].Options[optionIndex] = value;
+      return {
+        ...prevState,
+        fields: newFields,
+      };
+    });
   };
 
   const handleAddField = () => {
-    setFields([
-      ...fields,
-      {
+    setSendData((prevState) => {
+      const newFields = [...prevState.fields];
+      newFields.push({
         Question: "",
         ResponseType: "text",
         Options: [],
@@ -125,37 +145,58 @@ function CreateEditForm() {
         MaxLength: "",
         MaxSize: "",
         Value: "",
-      },
-    ]);
+      });
+      return {
+        ...prevState,
+        fields: newFields,
+      };
+    });
   };
 
   const handleAddOption = (index) => {
-    const newFields = [...fields];
-    newFields[index].Options.push("");
-    setFields(newFields);
+    setSendData((prevState) => {
+      const newFields = [...prevState.fields];
+      const options = [...prevState.fields[index].Options];
+      options.push("");
+      newFields[index].Options = options;
+      return {
+        ...prevState,
+        fields: newFields,
+      };
+    });
+    console.log(sendData);
   };
 
   const handleRemoveField = (index) => {
-    const newFields = [...fields];
-    newFields.splice(index, 1);
-    setFields(newFields);
+    setSendData((prevState) => {
+      const newFields = [...prevState.fields];
+      newFields.splice(index, 1);
+      return {
+        ...prevState,
+        fields: newFields,
+      };
+    });
   };
 
   const handleRemoveOption = (index, optionIndex) => {
-    const newFields = [...fields];
-    newFields[index].Options.splice(optionIndex, 1);
-    setFields(newFields);
+    setSendData((prevState) => {
+      const newFields = [...prevState.fields];
+      newFields[index].Options.splice(optionIndex, 1);
+      return {
+        ...prevState,
+        fields: newFields,
+      };
+    });
   };
 
   //handle submit
   const handleSubmit = () => {
-    Obj.formData = fields;
     let formId = localStorage.getItem("formId");
     if (formId) {
-      Obj.formId = formId;
-      UpdateForm(Obj);
+      sendData.formId = formId;
+      UpdateForm(sendData);
     } else {
-      CreateForm(Obj);
+      CreateForm(sendData);
     }
   };
 
@@ -178,7 +219,7 @@ function CreateEditForm() {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Card width={"40%"} my={2}>
+          <Card width={maxwidth} my={2}>
             <CardBody>
               <Stack direction={["row", "row"]}>
                 <Button onClick={handleAddField}>Add row</Button>
@@ -186,62 +227,66 @@ function CreateEditForm() {
               </Stack>
             </CardBody>
           </Card>
-          <Card width={"40%"} style={{ borderTop: "4px solid #319795" }} my={2}>
-            <CardBody>
-              <Input
-                type="text"
-                font
-                fontSize={22}
-                fontWeight={400}
-                lineHeight={1.25}
-                letterSpacing={0}
-                value={Obj.name}
-                name="name"
-                my={1}
-                onChange={handleOnChangeObj}
-              />
-              <Input
-                type="text"
-                font
-                fontSize={27}
-                fontWeight={400}
-                lineHeight={1.25}
-                letterSpacing={0}
-                value={Obj.title}
-                name="title"
-                my={1}
-                onChange={handleOnChangeObj}
-              />
-              <Input
-                type="text"
-                fontSize={14}
-                fontWeight={400}
-                fontFamily={"docs-Roboto"}
-                lineHeight={1.5}
-                letterSpacing={0}
-                value={Obj.description}
-                name="description"
-                my={1}
-                onChange={handleOnChangeObj}
-              />
-            </CardBody>
+          <Card
+            width={maxwidth}
+            style={{ borderTop: "4px solid #319795" }}
+            my={2}
+          >
+            {Object.keys(sendData).length > 0 && (
+              <CardBody>
+                <Input
+                  type="text"
+                  fontSize={22}
+                  fontWeight={400}
+                  lineHeight={1.25}
+                  letterSpacing={0}
+                  value={sendData?.Obj.name}
+                  name="name"
+                  my={1}
+                  onChange={handleOnChangeObj}
+                />
+                <Input
+                  type="text"
+                  fontSize={27}
+                  fontWeight={400}
+                  lineHeight={1.25}
+                  letterSpacing={0}
+                  value={sendData?.Obj.title}
+                  name="title"
+                  my={1}
+                  onChange={handleOnChangeObj}
+                />
+                <Input
+                  type="text"
+                  fontSize={14}
+                  fontWeight={400}
+                  fontFamily={"docs-Roboto"}
+                  lineHeight={1.5}
+                  letterSpacing={0}
+                  value={sendData?.Obj.description}
+                  name="description"
+                  my={1}
+                  onChange={handleOnChangeObj}
+                />
+              </CardBody>
+            )}
           </Card>
-          {fields.map((field, index) => (
-            <Card width={"40%"} key={index} my={2}>
+          {sendData?.fields?.map((field, index) => (
+            <Card width={maxwidth} key={index} my={2}>
               <CardBody>
                 <Flex justifyContent={"space-between"}>
                   <Input
                     type="text"
                     name="Question"
                     onChange={(event) => handleChange(index, event)}
-                    value={field.Question}
+                    value={field?.Question}
                     placeholder="Question"
                     w={"60%"}
                   />
                   <Select
-                    placeholder="Select option"
+                    placeholder="Select question type"
                     name="ResponseType"
-                    value={field.ResponseType}
+                    value={field?.ResponseType}
                     onChange={(event) => handleChange(index, event)}
                     w={"25%"}
                   >
@@ -253,9 +298,9 @@ function CreateEditForm() {
                     {/* Add more field types as needed */}
                   </Select>
                 </Flex>
-                {field.ResponseType === "option" && (
+                {field?.ResponseType === "option" && (
                   <Box my={2}>
-                    {field.Options.map((option, optionIndex) => (
+                    {field?.Options.map((option, optionIndex) => (
                       <Box key={optionIndex} my={1}>
                         <Flex>
                           <Input
@@ -288,7 +333,7 @@ function CreateEditForm() {
                     </Button>
                   </Box>
                 )}
-                {field.ResponseType === "file" && (
+                {field?.ResponseType === "file" && (
                   <Box my={2}>
                     <Box>
                       <Text>File Type</Text>
@@ -296,7 +341,7 @@ function CreateEditForm() {
                         type="text"
                         name="FileType"
                         placeholder="Allowed File Types (e.g., image/*, audio/*, application/pdf)"
-                        value={field.FileType}
+                        value={field?.FileType}
                         onChange={(event) => handleChange(index, event)}
                       />
                     </Box>
@@ -306,20 +351,20 @@ function CreateEditForm() {
                         type="text"
                         name="MaxLength"
                         placeholder="Maximum File Size (e.g., 2MB)"
-                        value={field.MaxLength}
+                        value={field?.MaxLength}
                         onChange={(event) => handleChange(index, event)}
                       />
                     </Box>
                   </Box>
                 )}
-                {field.ResponseType === "text" && (
+                {field?.ResponseType === "text" && (
                   <Box my={2}>
                     <Text>Maximum Character value</Text>
                     <Input
                       type="text"
                       name="MaxSize"
                       placeholder="Maximum Number of Characters"
-                      value={field.MaxSize}
+                      value={field?.MaxSize}
                       onChange={(event) => handleChange(index, event)}
                     />
                   </Box>

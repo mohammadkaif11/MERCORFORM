@@ -1,7 +1,7 @@
 import { Box, Button, Center, Flex } from "@chakra-ui/react";
 import React from "react";
 
-function FormHeader({ changeScreenFunction, screens, currentscreen }) {
+function FormHeader({ changeScreenFunction, screens, currentscreen,currentFormId}) {
   return (
     <Box
       bg={"#edf2f7"}
@@ -34,7 +34,7 @@ function FormHeader({ changeScreenFunction, screens, currentscreen }) {
           }}
           style={{ borderBottom: "4px solid black" }}
         >
-          Question
+          Response
         </Button>
       ) : (
         <Button
@@ -53,7 +53,7 @@ function FormHeader({ changeScreenFunction, screens, currentscreen }) {
           }}
           style={{ borderBottom: "4px solid black" }}
         >
-          Question
+          Setting
         </Button>
       ) : (
         <Button
