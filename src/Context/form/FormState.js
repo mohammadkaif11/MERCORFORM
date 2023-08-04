@@ -142,6 +142,7 @@ const FormState = (props) => {
 
   //GetById form data and save it in local storage for data persistence
   const GetFormSetting = (Id) => {
+    
     const endpointUrl = `http://localhost:5000/form/getformsetting/${Id}`;
     const token = localStorage.getItem("token");
 
@@ -173,7 +174,7 @@ const FormState = (props) => {
             ? ""
             : response.data.data.Start_Datetime;
         obj.endDateTime =
-          response.data.data.endDateTime === null
+          response.data.data.End_Datetime === null
             ? ""
             : response.data.data.End_Datetime;
         obj.status = response.data.data.Status;

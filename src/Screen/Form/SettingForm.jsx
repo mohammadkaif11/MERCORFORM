@@ -24,13 +24,7 @@ function SettingForm() {
   const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const [maxwidth, setMaxwidth] = useState("");
 
-  const [objState, setObjState] = useState({
-    allTimeAccess: false,
-    startDateTime: "",
-    endDateTime: "",
-    status: false,
-    access: "",
-  });
+  const [objState, setObjState] = useState({});
 
   const FormState = useContext(FormContext);
   const { GetFormSetting, formSetting } = FormState;
@@ -49,47 +43,47 @@ function SettingForm() {
     let formId = localStorage.getItem("formId");
     const endpointUrl = `http://localhost:5000/form/getformsetting/${formId}`;
     const token = localStorage.getItem("token");
-
-    const headers = {
-      "auth-token": token,
-      "Content-Type": "application/json",
-    };
-    axios
-      .get(endpointUrl, { headers })
-      .then((response) => {
-        console.log(response.data.data);
-        let obj = {
-          allTimeAccess: false,
-          startDateTime: "",
-          endDateTime: "",
-          status: false,
-          access: "",
-        };
-        if (
-          response.data.data.Start_Datetime === null ||
-          response.data.data.End_Datetime === null
-        ) {
-          obj.allTimeAccess = true;
-        } else {
-          obj.allTimeAccess = false;
-        }
-        obj.startDateTime =
-          response.data.data.Start_Datetime === null
-            ? ""
-            : response.data.data.Start_Datetime;
-        obj.endDateTime =
-          response.data.data.End_Datetime === null
-            ? ""
-            : response.data.data.End_Datetime;
-        obj.status = response.data.data.Status;
-        obj.access = JSON.stringify(response.data.data.Access);
-        setObjState(obj);
-        console.log(obj);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+    if (Object.keys(objState).length===0) {
+      const headers = {
+        "auth-token": token,
+        "Content-Type": "application/json",
+      };
+      axios
+        .get(endpointUrl, { headers })
+        .then((response) => {
+          console.log(response.data.data);
+          let obj = {
+            allTimeAccess: false,
+            startDateTime: "",
+            endDateTime: "",
+            status: false,
+            access: "",
+          };
+          if (
+            response.data.data.Start_Datetime === null ||
+            response.data.data.End_Datetime === null
+          ) {
+            obj.allTimeAccess = true;
+          } else {
+            obj.allTimeAccess = false;
+          }
+          obj.startDateTime =
+            response.data.data.Start_Datetime === null
+              ? ""
+              : response.data.data.Start_Datetime;
+          obj.endDateTime =
+            response.data.data.End_Datetime === null
+              ? ""
+              : response.data.data.End_Datetime;
+          obj.status = response.data.data.Status;
+          obj.access = JSON.stringify(response.data.data.Access);
+          setObjState(obj);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [objState]);
 
   //------------------------------Change Screen Function----------------------------------
   const changeScreenFunction = (value) => {
@@ -123,114 +117,116 @@ function SettingForm() {
         screens={screens}
         currentscreen={currentscreen}
       />
-      <Box width={"100%"}>
-        <Flex
-          flexDirection={"column"}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <Card width={maxwidth} my={2}>
-            <CardBody>
-              <FormLabel htmlFor="email-alerts" mb="0">
-                All Time Access
-              </FormLabel>
-              <Switch
-                id="allTimeAccess"
-                isChecked={objState.allTimeAccess}
-                onChange={handleSwitchChange("allTimeAccess")}
-                size="lg"
-                m={2}
-              />
-              <Text>Start Time</Text>
-              <Input
-                type="datetime-local"
-                fontSize={22}
-                fontWeight={400}
-                lineHeight={1.25}
-                letterSpacing={0}
-                my={1}
-                value={objState.startDateTime}
-                onChange={handleChange("startDateTime")}
-              />
-              <Text>End Time</Text>
-              <Input
-                type="datetime-local"
-                fontSize={22}
-                fontWeight={400}
-                lineHeight={1.25}
-                letterSpacing={0}
-                value={objState.endDateTime}
-                onChange={handleChange("endDateTime")}
-                my={1}
-              />
-              <Button
-                onClick={() => {
-                  updateSettings();
-                }}
-                my={1}
-                colorScheme="green"
-                size="lg"
-              >
-                Save
-              </Button>
-            </CardBody>
-          </Card>
-          <Card width={maxwidth} my={2}>
-            <CardBody>
-              <FormLabel htmlFor="email-alerts" mb="0">
-                Open Responses
-              </FormLabel>
-              <Switch
-                isChecked={objState.status}
-                onChange={handleSwitchChange("status")}
-                size="lg"
-                id="email-alerts"
-                m={2}
-              />
-            </CardBody>
-          </Card>
-          <Card width={maxwidth} my={2}>
-            <CardBody>
-              <FormLabel htmlFor="email-alerts" mb="0" my={1}>
-                Confirm to delete form
-              </FormLabel>
-              <Button
-                colorScheme="red"
-                size="lg"
-                onClick={() => {
-                  DeleteForm();
-                }}
-              >
-                Delete
-              </Button>
-            </CardBody>
-          </Card>
-          <Card width={maxwidth} my={2}>
-            <CardBody>
-              <FormLabel htmlFor="email-alerts" mb="0">
-                Access User
-              </FormLabel>{" "}
-              <Textarea
-                m={2}
-                value={objState.access}
-                onChange={handleChange("access")}
-                rows={4}
-                placeholder="Here is a sample placeholder"
-                size="sm"
-              />
-              <Button
-                colorScheme="green"
-                size="lg"
-                onClick={() => {
-                  updateSettings();
-                }}
-              >
-                Update
-              </Button>
-            </CardBody>
-          </Card>
-        </Flex>
-      </Box>
+      {Object.keys(objState).length > 0 && (
+        <Box width={"100%"}>
+          <Flex
+            flexDirection={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Card width={maxwidth} my={2}>
+              <CardBody>
+                <FormLabel htmlFor="email-alerts" mb="0">
+                  All Time Access
+                </FormLabel>
+                <Switch
+                  id="allTimeAccess"
+                  isChecked={objState?.allTimeAccess}
+                  onChange={handleSwitchChange("allTimeAccess")}
+                  size="lg"
+                  m={2}
+                />
+                <Text>Start Time</Text>
+                <Input
+                  type="datetime-local"
+                  fontSize={22}
+                  fontWeight={400}
+                  lineHeight={1.25}
+                  letterSpacing={0}
+                  my={1}
+                  value={objState?.startDateTime}
+                  onChange={handleChange("startDateTime")}
+                />
+                <Text>End Time</Text>
+                <Input
+                  type="datetime-local"
+                  fontSize={22}
+                  fontWeight={400}
+                  lineHeight={1.25}
+                  letterSpacing={0}
+                  value={objState?.endDateTime}
+                  onChange={handleChange("endDateTime")}
+                  my={1}
+                />
+                <Button
+                  onClick={() => {
+                    updateSettings();
+                  }}
+                  my={1}
+                  colorScheme="green"
+                  size="lg"
+                >
+                  Save
+                </Button>
+              </CardBody>
+            </Card>
+            <Card width={maxwidth} my={2}>
+              <CardBody>
+                <FormLabel htmlFor="email-alerts" mb="0">
+                  Open Responses
+                </FormLabel>
+                <Switch
+                  isChecked={objState?.status}
+                  onChange={handleSwitchChange("status")}
+                  size="lg"
+                  id="email-alerts"
+                  m={2}
+                />
+              </CardBody>
+            </Card>
+            <Card width={maxwidth} my={2}>
+              <CardBody>
+                <FormLabel htmlFor="email-alerts" mb="0" my={1}>
+                  Confirm to delete form
+                </FormLabel>
+                <Button
+                  colorScheme="red"
+                  size="lg"
+                  onClick={() => {
+                    DeleteForm();
+                  }}
+                >
+                  Delete
+                </Button>
+              </CardBody>
+            </Card>
+            <Card width={maxwidth} my={2}>
+              <CardBody>
+                <FormLabel htmlFor="email-alerts" mb="0">
+                  Access User
+                </FormLabel>{" "}
+                <Textarea
+                  m={2}
+                  value={objState?.access}
+                  onChange={handleChange("access")}
+                  rows={4}
+                  placeholder="Here is a sample placeholder"
+                  size="sm"
+                />
+                <Button
+                  colorScheme="green"
+                  size="lg"
+                  onClick={() => {
+                    updateSettings();
+                  }}
+                >
+                  Update
+                </Button>
+              </CardBody>
+            </Card>
+          </Flex>
+        </Box>
+      )}
     </>
   );
 }
