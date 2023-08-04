@@ -18,6 +18,7 @@ import {
   Button,
   Input,
   useMediaQuery,
+  useClipboard,
 } from "@chakra-ui/react";
 
 import FormHeader from "./Component/FormHeader";
@@ -30,9 +31,11 @@ function CreateEditForm() {
   const [currentscreen, setCurrentscreen] = useState("formpage");
   const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const [maxwidth, setMaxwidth] = useState("");
+  const { onCopy, value, setValue, hasCopied } = useClipboard("");
 
   const [sendData, setSendData] = useState({});
 
+  //useEffect for set device-width
   useEffect(() => {
     if (isSmallerThan1024) {
       if (maxwidth === "38%") {
@@ -43,8 +46,17 @@ function CreateEditForm() {
     }
   }, [isSmallerThan1024]);
 
+  //useEffect for set current send data object is form is saved or not
   useEffect(() => {
     const formId = localStorage.getItem("formId");
+    if (value === "") {
+      if (formId) {
+          getCurrentLink(formId);
+      } else {
+        //set default form link value
+        setValue("http://localhost:3000/login");
+      }
+    }
     if (formId) {
       const endpointUrl = `http://localhost:5000/form/getbyid/${formId}`;
       const token = localStorage.getItem("token");
@@ -88,6 +100,8 @@ function CreateEditForm() {
       }
     }
   }, [sendData]);
+
+
 
   const handleOnChangeObj = (event) => {
     const { name, value } = event.target;
@@ -197,6 +211,12 @@ function CreateEditForm() {
       UpdateForm(sendData);
     } else {
       CreateForm(sendData);
+      setTimeout(() => {
+        const formId = localStorage.getItem("formId");
+        if (formId) {
+          getCurrentLink(formId);
+        } 
+      }, 1000);
     }
   };
 
@@ -204,6 +224,25 @@ function CreateEditForm() {
   const changeScreenFunction = (value) => {
     setCurrentscreen(value);
     navigate(`/${value}`);
+  };
+
+  //------------------------------Set current link for form--------------------------------
+  const getCurrentLink = (formId) => {
+    const endpointUrl = `http://localhost:5000/form/getformlink/${formId}`;
+    const token = localStorage.getItem("token");
+    console.log("api calling");
+    const headers = {
+      "auth-token": token,
+      "Content-Type": "application/json",
+    };
+    axios
+      .get(endpointUrl, { headers })
+      .then((response) => {
+        setValue(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -224,6 +263,9 @@ function CreateEditForm() {
               <Stack direction={["row", "row"]}>
                 <Button onClick={handleAddField}>Add row</Button>
                 <Button onClick={handleSubmit}>Save form</Button>
+                <Button onClick={onCopy}>
+                  {hasCopied ? "Copied!" : "Copy"}
+                </Button>
               </Stack>
             </CardBody>
           </Card>

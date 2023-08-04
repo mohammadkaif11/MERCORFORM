@@ -27,7 +27,7 @@ function SettingForm() {
   const [objState, setObjState] = useState({});
 
   const FormState = useContext(FormContext);
-  const { GetFormSetting, formSetting } = FormState;
+  const { updateFormSetting ,updateFormStatus,deleteForm} = FormState;
 
   useEffect(() => {
     if (isSmallerThan1024) {
@@ -67,14 +67,13 @@ function SettingForm() {
           } else {
             obj.allTimeAccess = false;
           }
-          obj.startDateTime =
-            response.data.data.Start_Datetime === null
+          obj.startDateTime =response.data.data.Start_Datetime === null
               ? ""
-              : response.data.data.Start_Datetime;
+              : response.data.data.Start_Datetime.substring(0, 16);
           obj.endDateTime =
             response.data.data.End_Datetime === null
               ? ""
-              : response.data.data.End_Datetime;
+              : response.data.data.End_Datetime.substring(0, 16);
           obj.status = response.data.data.Status;
           obj.access = JSON.stringify(response.data.data.Access);
           setObjState(obj);
@@ -92,8 +91,11 @@ function SettingForm() {
   };
 
   const handleSwitchChange = (key) => (e) => {
-    if (e.key === "status") {
-      //update status of form
+    if (key === "status") {
+    let formId = localStorage.getItem("formId");
+    objState.status=e.target.checked;
+    objState.formId = formId;
+    updateFormStatus(objState)
     }
     setObjState({ ...objState, [key]: e.target.checked });
   };
@@ -103,11 +105,15 @@ function SettingForm() {
   };
 
   const updateSettings = () => {
-    console.log("updateSettings");
+    let formId = localStorage.getItem("formId");
+    objState.formId = formId;
+    updateFormSetting(objState)
   };
 
   const DeleteForm = () => {
-    console.log("deleteSettings");
+    let formId = localStorage.getItem("formId");
+    deleteForm(formId);
+    navigate('/forms')
   };
 
   return (

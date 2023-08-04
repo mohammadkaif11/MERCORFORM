@@ -22,12 +22,12 @@ function FormHome() {
 
   useEffect(() => {
     const formId = localStorage.getItem("formId");
+    GetRecentForms();
     if (formId) {
       localStorage.removeItem("formId");
       localStorage.removeItem("object");
       localStorage.removeItem("filled");
     }
-    GetRecentForms();
   }, []);
 
   const CreateNewForm = () => {

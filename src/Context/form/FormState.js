@@ -63,7 +63,7 @@ const FormState = (props) => {
       "Content-Type": "application/json",
     };
     axios
-      .post(endpointUrl, dataToSend, { headers })
+      .put(endpointUrl, dataToSend, { headers })
       .then((response) => {
         console.log("Response:", response.data);
 
@@ -186,6 +186,65 @@ const FormState = (props) => {
       });
   };
 
+  //Updating form settings
+  const updateFormSetting = (obj) => {
+    const endpointUrl = "http://localhost:5000/form/updateformsetting";
+    const dataToSend = obj;
+    const token = localStorage.getItem("token");
+    const headers = {
+      "auth-token": token,
+      "Content-Type": "application/json",
+    };
+    axios
+      .put(endpointUrl, dataToSend, { headers })
+      .then((response) => {
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    console.log("Update Form  setting called");
+  }
+
+  //update form Status
+  const updateFormStatus=(obj)=>{
+    const endpointUrl = "http://localhost:5000/form/updateformstatus";
+    const dataToSend = obj;
+    const token = localStorage.getItem("token");
+    const headers = {
+      "auth-token": token,
+      "Content-Type": "application/json",
+    };
+    axios
+      .put(endpointUrl, dataToSend, { headers })
+      .then((response) => {
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    console.log("Update Form  status called");
+  }
+
+  //delete form
+  const deleteForm=(formId)=>{
+    const endpointUrl = `http://localhost:5000/form/deleteform/${formId}`;
+    const token = localStorage.getItem("token");
+    const headers = {
+      "auth-token": token,
+      "Content-Type": "application/json",
+    };
+    axios
+      .delete(endpointUrl, { headers })
+      .then((response) => {
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    console.log("Update Form  status called");
+  }
+
   return (
     <FormContext.Provider
       value={{
@@ -199,6 +258,9 @@ const FormState = (props) => {
         GetName,
         GetFormSetting,
         formSetting,
+        updateFormSetting,
+        updateFormStatus,
+        deleteForm
       }}
     >
       {props.children}
