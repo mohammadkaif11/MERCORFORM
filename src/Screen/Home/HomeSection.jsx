@@ -8,68 +8,81 @@ import {
   Icon,
   useColorModeValue,
   createIcon,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 
-import React from 'react'
+import React from "react";
+import Navbar from "../../Component/Navbar";
+import { useNavigate } from "react-router-dom";
 
- function HomeSection() {
+function HomeSection() {
+  const navigate=useNavigate()
+  const gotoLoginPage=()=>{
+     navigate('/login')
+  }
   return (
     <>
-      <Container maxW={'3xl'}>
+      <Navbar />
+      <Container maxW={"3xl"}>
         <Stack
           as={Box}
-          textAlign={'center'}
+          textAlign={"center"}
           spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }}>
+          py={{ base: 20, md: 36 }}
+        >
           <Heading
             fontWeight={600}
-            fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-            lineHeight={'110%'}>
+            fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
+            lineHeight={"110%"}
+          >
             Make money from <br />
-            <Text as={'span'} color={'teal'}>
+            <Text as={"span"} color={"purple"}>
               your audience
             </Text>
           </Heading>
-          <Text color={'gray.500'}>
-            Monetize your content by charging your most loyal readers and reward them
-            loyalty points. Give back to your loyal readers by granting them access to
-            your pre-releases and sneak-peaks.
+          <Text color={"gray.500"}>
+            Monetize your content by charging your most loyal readers and reward
+            them loyalty points. Give back to your loyal readers by granting
+            them access to your pre-releases and sneak-peaks.
           </Text>
           <Stack
-            direction={'column'}
+            direction={"column"}
             spacing={3}
-            align={'center'}
-            alignSelf={'center'}
-            position={'relative'}>
+            align={"center"}
+            alignSelf={"center"}
+            position={"relative"}
+          >
             <Button
-              colorScheme={'teal'}
-              bg={'teal.400'}
-              rounded={'full'}
+              colorScheme={"purple"}
+              bg={"purple.400"}
+              rounded={"full"}
               px={6}
               _hover={{
-                bg: 'teal.500',
-              }}>
+                bg: "purple.500",
+              }}
+              onClick={()=>{gotoLoginPage()}}
+            >
               Get Started
             </Button>
-            <Button variant={'link'} colorScheme={'teal'} size={'sm'}>
+            <Button variant={"link"} colorScheme={"purple"} size={"sm"}>
               Learn more
             </Button>
             <Box>
               <Icon
                 as={Arrow}
-                color={useColorModeValue('gray.800', 'gray.300')}
+                color={useColorModeValue("purple.800", "purple.300")}
                 w={71}
-                position={'absolute'}
+                position={"absolute"}
                 right={-71}
-                top={'10px'}
+                top={"10px"}
               />
               <Text
-                fontSize={'lg'}
-                fontFamily={'Caveat'}
-                position={'absolute'}
-                right={'-125px'}
-                top={'-15px'}
-                transform={'rotate(10deg)'}>
+                fontSize={"lg"}
+                fontFamily={"Caveat"}
+                position={"absolute"}
+                right={"-125px"}
+                top={"-15px"}
+                transform={"rotate(10deg)"}
+              >
                 Create your own form
               </Text>
             </Box>
@@ -77,12 +90,12 @@ import React from 'react'
         </Stack>
       </Container>
     </>
-  )
+  );
 }
 
 const Arrow = createIcon({
-  displayName: 'Arrow',
-  viewBox: '0 0 72 24',
+  displayName: "Arrow",
+  viewBox: "0 0 72 24",
   path: (
     <path
       fillRule="evenodd"
@@ -91,6 +104,6 @@ const Arrow = createIcon({
       fill="currentColor"
     />
   ),
-})
+});
 
-export default  React.memo(HomeSection)
+export default React.memo(HomeSection);

@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
-  Center,
-  Container,
   Flex,
-  HStack,
-  Select,
-  VStack,
-  Stack,
   CardBody,
   Card,
   Text,
   Box,
   Button,
-  Input,
   useMediaQuery,
-  useClipboard,
 } from "@chakra-ui/react";
 import FormHeader from "./Component/FormHeader";
+import Navbar from "../../Component/Navbar";
 
 function ResponseFormById() {
   const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
@@ -43,9 +34,13 @@ function ResponseFormById() {
     }
   }, [isSmallerThan1024]);
 
+  //useEffect for getting current response of user
   useEffect(() => {
     const endpointUrl = `http://localhost:5000/form/getanswerbyid/${params.id}`;
     const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
     const headers = {
       "auth-token": token,
       "Content-Type": "application/json",
@@ -67,16 +62,20 @@ function ResponseFormById() {
     setCurrentscreen(value);
     navigate(`/${value}`);
   };
- 
-  //download file
-  const Downloadfile=(value) =>{
-    const downloadUrl = `${value}`;
-    window.open(downloadUrl);
 
-  }
+  //-------------------------------download file----------------------------------
+  const Downloadfile = (value) => {
+    if (Object.keys(value).length == 0) {
+      alert("Not have file");
+    } else {
+      const downloadUrl = `${value}`;
+      window.open(downloadUrl);
+    }
+  };
 
   return (
     <>
+      <Navbar />
       <FormHeader
         changeScreenFunction={changeScreenFunction}
         screens={screens}
@@ -152,21 +151,28 @@ function ResponseFormById() {
                         ))}
                       </select>
                     ) : field?.ResponseType === "file" ? (
-                       <>
-                      <input
-                        isReadOnly
-                        size="lg"
-                        style={{
-                          border: "1px solid black",
-                          width: "90%",
-                          padding: "5px",
-                          fontSize: "1.2rem",
-                        }}
-                        type={field?.ResponseType}
-                        name={field?.ResponseType}
-                      />
-                       <Button m={2} onClick={()=>{Downloadfile(field?.Value)}}>Dwonload file</Button>
-                   </>
+                      <>
+                        <input
+                          isReadOnly
+                          size="lg"
+                          style={{
+                            border: "1px solid black",
+                            width: "90%",
+                            padding: "5px",
+                            fontSize: "1.2rem",
+                          }}
+                          type={field?.ResponseType}
+                          name={field?.ResponseType}
+                        />
+                        <Button
+                          m={2}
+                          onClick={() => {
+                            Downloadfile(field?.Value);
+                          }}
+                        >
+                          Dwonload file
+                        </Button>
+                      </>
                     ) : (
                       <input
                         isReadOnly

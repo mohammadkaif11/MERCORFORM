@@ -1,16 +1,11 @@
-import  { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FormContext from "../../Context/form/FormContext";
 import axios from "axios";
-
 import {
-  Center,
-  Container,
   Flex,
-  HStack,
   Select,
-  VStack,
   Stack,
   CardBody,
   Card,
@@ -21,8 +16,8 @@ import {
   useMediaQuery,
   useClipboard,
 } from "@chakra-ui/react";
-
 import FormHeader from "./Component/FormHeader";
+import Navbar from "../../Component/Navbar";
 
 function CreateEditForm() {
   const FormState = useContext(FormContext);
@@ -46,18 +41,26 @@ function CreateEditForm() {
     }
   }, [isSmallerThan1024]);
 
-  //useEffect for set current send data object is form is saved or not
+  //useEffect for set current send data object if form is saved or not
   useEffect(() => {
     const formId = localStorage.getItem("formId");
-    if (value === "") {
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+    }
+
+    if (value === "" && token) {
       if (formId) {
-          getCurrentLink(formId);
+        //get current form link if form is saved
+        getCurrentLink(formId);
       } else {
-        //set default form link value
+        //set default form link value if form is not saved
         setValue("http://localhost:3000/login");
       }
     }
-    if (formId) {
+
+    if (formId && token) {
       const endpointUrl = `http://localhost:5000/form/getbyid/${formId}`;
       const token = localStorage.getItem("token");
       if (Object.keys(sendData).length == 0) {
@@ -100,8 +103,6 @@ function CreateEditForm() {
       }
     }
   }, [sendData]);
-
-
 
   const handleOnChangeObj = (event) => {
     const { name, value } = event.target;
@@ -178,7 +179,6 @@ function CreateEditForm() {
         fields: newFields,
       };
     });
-    console.log(sendData);
   };
 
   const handleRemoveField = (index) => {
@@ -203,7 +203,7 @@ function CreateEditForm() {
     });
   };
 
-  //handle submit
+  //----------------------------handle submit if form is created or updated-------------
   const handleSubmit = () => {
     let formId = localStorage.getItem("formId");
     if (formId) {
@@ -211,11 +211,12 @@ function CreateEditForm() {
       UpdateForm(sendData);
     } else {
       CreateForm(sendData);
+      //Calling api for set current form link in value state
       setTimeout(() => {
         const formId = localStorage.getItem("formId");
         if (formId) {
           getCurrentLink(formId);
-        } 
+        }
       }, 1000);
     }
   };
@@ -247,6 +248,7 @@ function CreateEditForm() {
 
   return (
     <>
+      <Navbar />
       <FormHeader
         changeScreenFunction={changeScreenFunction}
         screens={screens}
@@ -271,7 +273,7 @@ function CreateEditForm() {
           </Card>
           <Card
             width={maxwidth}
-            style={{ borderTop: "4px solid #319795" }}
+            style={{ borderTop: "4px solid purple" }}
             my={2}
           >
             {Object.keys(sendData).length > 0 && (

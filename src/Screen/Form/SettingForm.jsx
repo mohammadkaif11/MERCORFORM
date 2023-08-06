@@ -1,5 +1,5 @@
-import  { useState, useEffect, useContext } from "react";
-import React from 'react';
+import { useState, useEffect, useContext } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import FormHeader from "./Component/FormHeader";
 import FormContext from "../../Context/form/FormContext";
@@ -17,6 +17,7 @@ import {
   Textarea,
   useMediaQuery,
 } from "@chakra-ui/react";
+import Navbar from "../../Component/Navbar";
 
 function SettingForm() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function SettingForm() {
   const [objState, setObjState] = useState({});
 
   const FormState = useContext(FormContext);
-  const { updateFormSetting ,updateFormStatus,deleteForm} = FormState;
+  const { updateFormSetting, updateFormStatus, deleteForm } = FormState;
 
   useEffect(() => {
     if (isSmallerThan1024) {
@@ -42,57 +43,63 @@ function SettingForm() {
 
   useEffect(() => {
     let formId = localStorage.getItem("formId");
-    if(formId){
-    const endpointUrl = `http://localhost:5000/form/getformsetting/${formId}`;
-    const token = localStorage.getItem("token");
-    if (Object.keys(objState).length===0) {
-      const headers = {
-        "auth-token": token,
-        "Content-Type": "application/json",
-      };
-      axios
-        .get(endpointUrl, { headers })
-        .then((response) => {
-          console.log(response.data.data);
-          let obj = {
-            allTimeAccess: false,
-            startDateTime: "",
-            endDateTime: "",
-            status: false,
-            access: "",
-          };
-          if (
-            response.data.data.Start_Datetime === null ||
-            response.data.data.End_Datetime === null
-          ) {
-            obj.allTimeAccess = true;
-          } else {
-            obj.allTimeAccess = false;
-          }
-          obj.startDateTime =response.data.data.Start_Datetime === null
-              ? ""
-              : response.data.data.Start_Datetime.substring(0, 16);
-          obj.endDateTime =
-            response.data.data.End_Datetime === null
-              ? ""
-              : response.data.data.End_Datetime.substring(0, 16);
-          obj.status = response.data.data.Status;
-          obj.access = JSON.stringify(response.data.data.Access);
-          setObjState(obj);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+    let token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
     }
-   }else{
-     setObjState({
-      allTimeAccess: false,
-      startDateTime: "",
-      endDateTime: "",
-      status: false,
-      access: "",
-    })
-   }
+
+    if (formId && token) {
+      const endpointUrl = `http://localhost:5000/form/getformsetting/${formId}`;
+      const token = localStorage.getItem("token");
+      if (Object.keys(objState).length === 0) {
+        const headers = {
+          "auth-token": token,
+          "Content-Type": "application/json",
+        };
+        axios
+          .get(endpointUrl, { headers })
+          .then((response) => {
+            console.log(response.data.data);
+            let obj = {
+              allTimeAccess: false,
+              startDateTime: "",
+              endDateTime: "",
+              status: false,
+              access: "",
+            };
+            if (
+              response.data.data.Start_Datetime === null ||
+              response.data.data.End_Datetime === null
+            ) {
+              obj.allTimeAccess = true;
+            } else {
+              obj.allTimeAccess = false;
+            }
+            obj.startDateTime =
+              response.data.data.Start_Datetime === null
+                ? ""
+                : response.data.data.Start_Datetime.substring(0, 16);
+            obj.endDateTime =
+              response.data.data.End_Datetime === null
+                ? ""
+                : response.data.data.End_Datetime.substring(0, 16);
+            obj.status = response.data.data.Status;
+            obj.access = JSON.stringify(response.data.data.Access);
+            setObjState(obj);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    } else {
+      setObjState({
+        allTimeAccess: false,
+        startDateTime: "",
+        endDateTime: "",
+        status: false,
+        access: "",
+      });
+    }
   }, [objState]);
 
   //------------------------------Change Screen Function----------------------------------
@@ -101,34 +108,51 @@ function SettingForm() {
     navigate(`/${value}`);
   };
 
+  //------------------------------Handle Switches Changes--------------------------------
   const handleSwitchChange = (key) => (e) => {
     if (key === "status") {
-    let formId = localStorage.getItem("formId");
-    objState.status=e.target.checked;
-    objState.formId = formId;
-    updateFormStatus(objState)
+      let formId = localStorage.getItem("formId");
+      if(formId){
+        objState.status = e.target.checked;
+        objState.formId = formId;
+        updateFormStatus(objState);
+      }else{
+        alert('Not found')
+      }
     }
     setObjState({ ...objState, [key]: e.target.checked });
   };
 
+  //Handle Change Value
   const handleChange = (key) => (e) => {
     setObjState({ ...objState, [key]: e.target.value });
   };
 
+  //Update form Settings
   const updateSettings = () => {
     let formId = localStorage.getItem("formId");
-    objState.formId = formId;
-    updateFormSetting(objState)
+    if (formId) {
+      objState.formId = formId;
+      updateFormSetting(objState);
+    } else {
+      alert("not found");
+    }
   };
 
+  //Delete form
   const DeleteForm = () => {
     let formId = localStorage.getItem("formId");
-    deleteForm(formId);
-    navigate('/forms')
+    if (formId) {
+      deleteForm(formId);
+      navigate("/forms");
+    } else {
+      alert("Not found");
+    }
   };
 
   return (
     <>
+      <Navbar />
       <FormHeader
         changeScreenFunction={changeScreenFunction}
         screens={screens}
@@ -180,7 +204,7 @@ function SettingForm() {
                     updateSettings();
                   }}
                   my={1}
-                  colorScheme="green"
+                  colorScheme="purple"
                   size="lg"
                 >
                   Save
@@ -207,8 +231,8 @@ function SettingForm() {
                   Confirm to delete form
                 </FormLabel>
                 <Button
-                  colorScheme="red"
-                  size="lg"
+                    colorScheme="purple"
+                    size="lg"
                   onClick={() => {
                     DeleteForm();
                   }}
@@ -231,8 +255,8 @@ function SettingForm() {
                   size="sm"
                 />
                 <Button
-                  colorScheme="green"
-                  size="lg"
+                    colorScheme="purple"
+                    size="lg"
                   onClick={() => {
                     updateSettings();
                   }}

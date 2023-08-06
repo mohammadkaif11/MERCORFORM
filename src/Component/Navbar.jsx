@@ -1,26 +1,20 @@
 import {
   Box,
   Flex,
-  Avatar,
   HStack,
   Text,
   IconButton,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-
-const Links = ["forms"];
+const Links = ["Forms"];
 
 const NavLink = (props) => {
   const { children } = props;
@@ -35,16 +29,34 @@ const NavLink = (props) => {
         bg: useColorModeValue("gray.200", "gray.700"),
       }}
     >
-      <Link to={"/"+children}>{children}</Link>
+      <Link to={"/" + children}>{children}</Link>
     </Box>
   );
 };
 
- function Navbar() {
+function Navbar() {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const Logout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
+  const GotoLoginSinginPage = () => {
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box bg={useColorModeValue("white.100", "white.900")} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -54,25 +66,49 @@ const NavLink = (props) => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box><Text fontFamily={'sans-serif'}>MERCOR</Text></Box>
+            <Box>
+              <Text fontFamily={'monospace'} fontSize={'30px'} color={'purple'}>MERCOR</Text>
+            </Box>
             <HStack
               as={"nav"}
               spacing={4}
               display={{ base: "none", md: "flex" }}
+              color={'purple'}
+              fontSize={'20px'}
+              fontFamily={'monospace'}
+              
             >
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink  key={link}>{link}</NavLink>
               ))}
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
             <Stack spacing={4} direction="row" align="center">
-              <Button colorScheme="teal" size="md">
-                Login
-              </Button>
-              <Button colorScheme="teal" size="md">
-                Signup
-              </Button>
+              {!isLoggedIn ? (
+                <>
+                  <Button
+                    colorScheme="purple"
+                    size="md"
+                    onClick={GotoLoginSinginPage}
+                    fontFamily={'monospace'}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    colorScheme="purple"
+                    size="md"
+                    onClick={GotoLoginSinginPage}
+                    fontFamily={'monospace'}
+                  >
+                    Signup
+                  </Button>
+                </>
+              ) : (
+                <Button   colorScheme="purple"
+                size="md"  
+                fontFamily={'monospace'} onClick={Logout}>Logout</Button>
+              )}
             </Stack>
           </Flex>
         </Flex>

@@ -3,28 +3,18 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import FormContext from "../../Context/form/FormContext";
 import { useGoogleLogin } from "@react-oauth/google";
-import { Spinner } from "@chakra-ui/react";
 
 import axios from "axios";
 import {
-  Center,
-  Container,
   Flex,
-  HStack,
-  Select,
-  VStack,
   Stack,
   CardBody,
   Card,
   Text,
   Box,
   Button,
-  Input,
   useMediaQuery,
-  useClipboard,
-  FormControl,
 } from "@chakra-ui/react";
-import { upload } from "@testing-library/user-event/dist/upload";
 
 function FormResponse() {
   let params = useParams();
@@ -47,26 +37,23 @@ function FormResponse() {
     }
   }, [isSmallerThan1024]);
 
+  //useEffect for set current senddata ,error message,user email
   useEffect(() => {
     let localStorageEmail = localStorage.getItem("email");
-
     if (userEmail == "") {
       if (localStorageEmail) {
         setUserEmail(localStorageEmail);
       }
     }
-
     if (userEmail != "") {
       const responseId = params.id;
       const endpointUrl = `http://localhost:5000/form/getform/${responseId}`;
-      const token = localStorage.getItem("token");
       if (Object.keys(sendData).length == 0 && errorMsg === "") {
         const body = {
           email: userEmail,
         };
         console.log("api calling");
         const headers = {
-          "auth-token": token,
           "Content-Type": "application/json",
         };
         axios
@@ -86,6 +73,7 @@ function FormResponse() {
     }
   }, [sendData, errorMsg, userEmail]);
 
+  //handle change value
   const handleChange = (index, event) => {
     event.preventDefault();
     const { name, value, type } = event.target;
@@ -109,7 +97,7 @@ function FormResponse() {
     const responseId = params.id;
     sendData.email = userEmail;
     console.log("send data", sendData);
-    addingFormResponse(sendData,responseId);
+    addingFormResponse(sendData, responseId);
   };
 
   //Login with Google
@@ -183,7 +171,7 @@ function FormResponse() {
           >
             <Card
               width={maxwidth}
-              style={{ borderTop: "4px solid #319795" }}
+              style={{ borderTop: "4px solid purple" }}
               my={2}
             >
               <Button onClick={() => LoginForReponse()}>
@@ -202,7 +190,7 @@ function FormResponse() {
             >
               <Card
                 width={maxwidth}
-                style={{ borderTop: "4px solid #319795" }}
+                style={{ borderTop: "4px solid purple" }}
                 my={2}
               >
                 {userEmail.length > 0 && (
@@ -363,7 +351,7 @@ function FormResponse() {
           >
             <Card
               width={maxwidth}
-              style={{ borderTop: "4px solid #319795" }}
+              style={{ borderTop: "4px solid purple" }}
               my={2}
             >
               <CardBody>

@@ -20,6 +20,7 @@ import {
   useClipboard,
 } from "@chakra-ui/react";
 import axios from "axios";
+import Navbar from "../../Component/Navbar";
 
 function ResponseForm() {
   const navigate = useNavigate();
@@ -52,7 +53,11 @@ function ResponseForm() {
   //Use Effect for api Call
   useEffect(() => {
     let formId = localStorage.getItem("formId");
-    if (formId) {
+    let token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+    if (formId && token) {
       const endpointUrl = `http://localhost:5000/form/getallresponse/${formId}`;
       const token = localStorage.getItem("token");
       if (responses.length == 0 && totalResponse == 0) {
@@ -75,12 +80,17 @@ function ResponseForm() {
   }, []);
 
   //OpenForm reponse
-  const OpenForm=(Id)=>{
-    navigate(`/formresponse/${Id}`);
-  }
+  const OpenForm = (Id) => {
+    if (Id) {
+      navigate(`/formresponse/${Id}`);
+    } else {
+      alert("Not found");
+    }
+  };
 
   return (
     <>
+      <Navbar />
       <FormHeader
         changeScreenFunction={changeScreenFunction}
         screens={screens}
@@ -94,7 +104,7 @@ function ResponseForm() {
         >
           <Card
             width={maxwidth}
-            style={{ borderTop: "4px solid #319795" }}
+            style={{ borderTop: "4px solid purple" }}
             my={2}
           >
             <CardBody>
@@ -106,20 +116,26 @@ function ResponseForm() {
               <Card
                 key={index}
                 width={maxwidth}
-                style={{ border: "4px solid #319795" }}
+                style={{ border: "4px solid purple" }}
                 my={2}
               >
                 <CardBody>
                   <Text>{response.UserEmail}</Text>
                   <Text>{response.CreatedDate}</Text>
-                  <Button onClick={()=>{OpenForm(response._id)}}>Open Reponse</Button>
+                  <Button
+                    onClick={() => {
+                      OpenForm(response._id);
+                    }}
+                  >
+                    Open Reponse
+                  </Button>
                 </CardBody>
               </Card>
             ))
           ) : (
             <Card
               width={maxwidth}
-              style={{ borderTop: "4px solid #319795" }}
+              style={{ borderTop: "4px solid purple" }}
               my={2}
             >
               <CardBody>

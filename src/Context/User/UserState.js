@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const UserState = (props) => {
+  const navigate=useNavigate()
   const [user, setUser] = useState([]);
   const [profile, setProfile] = useState([]);
 
@@ -41,6 +42,7 @@ const UserState = (props) => {
                 setProfile(res.data.profile);
                 if (res.data.token != "") {
                   localStorage.setItem("token", res.data.token);
+                  navigate('/forms')
                 } else {
                   alert("error");
                 }

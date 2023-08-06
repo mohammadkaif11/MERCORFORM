@@ -1,5 +1,5 @@
-import{ useContext, useState, useEffect } from "react";
-import React from 'react';
+import { useContext, useEffect } from "react";
+import React from "react";
 import {
   Box,
   Flex,
@@ -11,15 +11,25 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import FormContext from "../../Context/form/FormContext";
+import Navbar from "../../Component/Navbar";
 
 function FormHome() {
   const FormState = useContext(FormContext);
-  const { GetRecentForms, recentForms} = FormState;
+  const { GetRecentForms, recentForms } = FormState;
   const navigate = useNavigate();
 
+
   useEffect(() => {
+    let token = localStorage.getItem("token");
     const formId = localStorage.getItem("formId");
-    GetRecentForms();
+
+    if (!token) {
+      navigate("/login");
+    }
+    if (token) {
+      GetRecentForms();
+    }
+
     if (formId) {
       localStorage.removeItem("formId");
       localStorage.removeItem("object");
@@ -38,6 +48,7 @@ function FormHome() {
 
   return (
     <>
+      <Navbar />
       <Box width={"100%"} height={300} bg={"blackAlpha.100"}>
         <Flex
           flexDirection={"row"}
@@ -66,12 +77,12 @@ function FormHome() {
       </Box>
       <Box>
         <Text m={5}>Recent Form</Text>
-        <SimpleGrid minChildWidth={'200px'} spacing={2} >
+        <SimpleGrid minChildWidth={"200px"} spacing={2}>
           {recentForms.length > 0 &&
-            recentForms.map((form,index) => {
+            recentForms.map((form, index) => {
               return (
                 <Box
-                 m={2}
+                  m={2}
                   key={index}
                   h="300"
                   bg="blue.500"

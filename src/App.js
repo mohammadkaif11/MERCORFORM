@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import Navbar from "./Component/Navbar";
-import { Form, Route, Routes } from "react-router-dom";
+import {Route, Routes } from "react-router-dom";
 import Login from "./Screen/Authentication/Login";
 import UserState from "./Context/User/UserState";
 import FormState from "./Context/form/FormState";
@@ -16,7 +15,6 @@ const HomeSection = React.lazy(() => import("./Screen/Home/HomeSection"));
 function App() {
   return (
     <>
-      <Navbar />
       <UserState>
         <FormState>
           <React.Suspense fallback={<p>Loading page...</p>}>

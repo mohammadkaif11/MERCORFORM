@@ -1,20 +1,16 @@
 import {
   Flex,
   Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Checkbox,
   Stack,
   Button,
   Heading,
-  Text,
   useColorModeValue,
 } from '@chakra-ui/react'
 
 import { useContext,useEffect } from 'react';
 import React from 'react';
 import UserContext from '../../Context/User/UserContext'
+import Navbar from '../../Component/Navbar';
  function Login() {
     const UserState = useContext(UserContext);
     const {Login,user,PostUserDetails}=UserState;
@@ -30,6 +26,8 @@ import UserContext from '../../Context/User/UserContext'
     }
 
   return (
+    <>
+    <Navbar/>
     <Flex
       minH={'100vh'}
       justify={'center'}
@@ -46,8 +44,8 @@ import UserContext from '../../Context/User/UserContext'
           <Stack spacing={4}>
             <Stack spacing={10}>
               <Button
-                bg={'teal.400'}
-                colorScheme="teal"
+                bg={'purple.400'}
+                colorScheme="purple"
                 onClick={ButtonLoginOnClick}
                 >
                 Sig in with Google
@@ -57,6 +55,7 @@ import UserContext from '../../Context/User/UserContext'
         </Box>
       </Stack>
     </Flex>
+    </>
   )
 }
 
