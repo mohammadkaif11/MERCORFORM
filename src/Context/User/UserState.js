@@ -68,6 +68,34 @@ const UserState = (props) => {
       });
   };
 
+  //Login with Google
+  const LoginForReponse = useGoogleLogin({
+    onSuccess: (user) => {
+      console.log("Login success", user);
+      if (user.access_token != null) {
+        axios
+          .get(
+            `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user.access_token}`,
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((res) => {
+            if (res) {
+              console.log(res);
+            }
+          })
+          .catch((err) => console.log("Error :", err));
+      }
+    },
+    onError: (error) => {
+      console.log("Login Failed:", error);
+    },
+  });
+
   return (
     <UserContext.Provider
       value={{
@@ -75,7 +103,8 @@ const UserState = (props) => {
         PostUserDetails,
         user,
         profile,
-        getPorfile
+        getPorfile,
+        LoginForReponse
       }}
     >
       {props.children}

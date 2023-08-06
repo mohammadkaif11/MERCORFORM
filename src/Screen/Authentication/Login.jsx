@@ -13,9 +13,9 @@ import {
 } from '@chakra-ui/react'
 
 import { useContext,useEffect } from 'react';
+import React from 'react';
 import UserContext from '../../Context/User/UserContext'
-
-export default function Login() {
+ function Login() {
     const UserState = useContext(UserContext);
     const {Login,user,PostUserDetails}=UserState;
       
@@ -24,6 +24,7 @@ export default function Login() {
            PostUserDetails();
        }
     }, [user])
+    
     const ButtonLoginOnClick=()=>{
         Login();
     }
@@ -58,3 +59,5 @@ export default function Login() {
     </Flex>
   )
 }
+
+export default React.memo(Login);

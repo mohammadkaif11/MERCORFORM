@@ -10,7 +10,9 @@ import {
   createIcon,
 } from '@chakra-ui/react'
 
-export default function HomeSection() {
+import React from 'react'
+
+ function HomeSection() {
   return (
     <>
       <Container maxW={'3xl'}>
@@ -90,3 +92,5 @@ const Arrow = createIcon({
     />
   ),
 })
+
+export default  React.memo(HomeSection)

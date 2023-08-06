@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import  { useState, useContext, useEffect } from "react";
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FormContext from "../../Context/form/FormContext";
 import axios from "axios";
@@ -32,7 +33,6 @@ function CreateEditForm() {
   const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const [maxwidth, setMaxwidth] = useState("");
   const { onCopy, value, setValue, hasCopied } = useClipboard("");
-
   const [sendData, setSendData] = useState({});
 
   //useEffect for set device-width
@@ -425,4 +425,4 @@ function CreateEditForm() {
   );
 }
 
-export default CreateEditForm;
+export default React.memo(CreateEditForm);

@@ -68,4 +68,4 @@ function FormHeader({ changeScreenFunction, screens, currentscreen,currentFormId
   );
 }
 
-export default FormHeader;
+export default React.memo(FormHeader);

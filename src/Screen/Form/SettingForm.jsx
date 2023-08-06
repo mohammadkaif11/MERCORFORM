@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import  { useState, useEffect, useContext } from "react";
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 import FormHeader from "./Component/FormHeader";
 import FormContext from "../../Context/form/FormContext";
@@ -41,6 +42,7 @@ function SettingForm() {
 
   useEffect(() => {
     let formId = localStorage.getItem("formId");
+    if(formId){
     const endpointUrl = `http://localhost:5000/form/getformsetting/${formId}`;
     const token = localStorage.getItem("token");
     if (Object.keys(objState).length===0) {
@@ -82,6 +84,15 @@ function SettingForm() {
           console.error("Error:", error);
         });
     }
+   }else{
+     setObjState({
+      allTimeAccess: false,
+      startDateTime: "",
+      endDateTime: "",
+      status: false,
+      access: "",
+    })
+   }
   }, [objState]);
 
   //------------------------------Change Screen Function----------------------------------
@@ -237,4 +248,4 @@ function SettingForm() {
   );
 }
 
-export default SettingForm;
+export default React.memo(SettingForm);

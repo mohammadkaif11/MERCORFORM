@@ -1,15 +1,12 @@
-import React, { useContext, useState, useEffect } from "react";
+import{ useContext, useState, useEffect } from "react";
+import React from 'react';
 import {
   Box,
   Flex,
   Card,
   CardBody,
-  Stack,
   Button,
   Text,
-  Container,
-  Grid,
-  GridItem,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -99,4 +96,4 @@ function FormHome() {
   );
 }
 
-export default FormHome;
+export default React.memo(FormHome);

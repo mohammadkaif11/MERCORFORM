@@ -245,6 +245,45 @@ const FormState = (props) => {
     console.log("Update Form  status called");
   }
 
+    //update form Status
+    const addingFormResponse=(obj,responseId)=>{
+      const endpointUrl = `http://localhost:5000/form/addformresponse/${responseId}`;
+      const dataToSend = obj;
+      const token = localStorage.getItem("token");
+      const headers = {
+        "auth-token": token,
+        "Content-Type": "application/json",
+      };
+      axios
+        .post(endpointUrl, dataToSend, { headers })
+        .then((response) => {
+          console.log("Response:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      console.log("adding form response called");
+    }
+
+    const handleDrop = async (acceptedFiles) => {
+      const formData = new FormData();
+      formData.append('image', acceptedFiles[0]);
+  
+      try {
+        const res = await axios.post('/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        setImageUrl(res.data.imageUrl);
+        setPublicId(res.data.publicId);
+      } catch (err) {
+        console.error('Failed to upload image:', err);
+      }
+    };
+  
+
   return (
     <FormContext.Provider
       value={{
@@ -260,7 +299,8 @@ const FormState = (props) => {
         formSetting,
         updateFormSetting,
         updateFormStatus,
-        deleteForm
+        deleteForm,
+        addingFormResponse
       }}
     >
       {props.children}

@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Box,
   Flex,
@@ -19,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import React from 'react';
+
 
 const Links = ["forms"];
 
@@ -40,7 +40,7 @@ const NavLink = (props) => {
   );
 };
 
-export default function Navbar() {
+ function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -89,3 +89,5 @@ export default function Navbar() {
     </>
   );
 }
+
+export default React.memo(Navbar);
