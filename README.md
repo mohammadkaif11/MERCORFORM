@@ -1,71 +1,87 @@
-# Getting Started with Create React App
+# Hi, I'm mohammad kaif! 👋
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## 🚀 About Me
+I'm a Software Engineer... Here I describe one of my project.
 
-In the project directory, you can run:
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 # MERCORFORM
+
+Welcome to Mercorform, the ultimate solution for creating and managing custom forms effortlessly. Inspired by the simplicity and effectiveness of Google Forms, Mercorform offers a user-friendly, intuitive platform for designing and conducting surveys, questionnaires, and feedback forms for various purposes.Whether you're a teacher, marketer, researcher, or event organizer, Mercorform simplifies the process of data collection, empowering you to make informed decisions and gather valuable insights. Join us today and experience the power of efficient form creation with Mercorform!
+
+
+
+
+
+## Tech Stack
+**Client:** React js , Javascript, Chakra UI
+
+**Server:** Express framework , Google OAuth 2.0 , JWT token,Nodejs
+
+**Programming Language:** Nodejs
+
+**Storge Provider:** cloudinary
+
+**Authentication and Authorization:**  Google Oauth 2.0
+
+**Database:** NOSQL (Mongodb)
+
+## Backend Link
+```bash
+  https://github.com/mohammadkaif11/MERCORFORMBackend
+```
+
+## Run Locally
+
+Clone the project, we required both backend and frontend for running.
+
+```bash
+  git clone https://github.com/mohammadkaif11/MERCORFORM
+  git clone https://github.com/mohammadkaif11/MERCORFORMBackend
+
+```
+for run this project we need visual studio code.
+
+Install packages
+
+```bash
+ npm install
+```
+run
+
+```bash
+ npm run
+```
+
+Now Enjoy the Project 
+
+
+## 🔗 Links
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mohammad-kaif-21076b217/)
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`CLOUD_NAME`
+
+`API_KEY`
+
+`API_SECRET`
+
+`MongoDB_URI`
+
+`API_KEY`
+
+
+## Features
+
+- Responsive Design
+
+
+
+## project link
+```bash
+https://mercorform.vercel.app
+
+```
