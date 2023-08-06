@@ -34,15 +34,13 @@ function HomeSection() {
             fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
             lineHeight={"110%"}
           >
-            Make money from <br />
+            Create a form for<br />
             <Text as={"span"} color={"purple"}>
-              your audience
+             School or University or bussiness
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            Monetize your content by charging your most loyal readers and reward
-            them loyalty points. Give back to your loyal readers by granting
-            them access to your pre-releases and sneak-peaks.
+          Are you tired of the hassle that comes with creating and managing online forms? Look no further! Our Google Form Clone offers a user-friendly and feature-rich solution to streamline your data collection process. Whether you need to gather customer feedback, conduct surveys, plan events, or organize registrations, our platform has got you covered.
           </Text>
           <Stack
             direction={"column"}

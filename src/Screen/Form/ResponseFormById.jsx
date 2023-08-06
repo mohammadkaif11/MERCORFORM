@@ -49,10 +49,10 @@ function ResponseFormById() {
       .get(endpointUrl, { headers })
       .then((response) => {
         let formData = response.data.data.FormData;
-        console.log(JSON.parse(formData));
         setResponse(JSON.parse(formData));
       })
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
   }, []);

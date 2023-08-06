@@ -49,6 +49,10 @@ function Navbar() {
     navigate("/login");
   };
 
+  const gotoHome=()=>{
+    navigate("/");
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
@@ -67,19 +71,21 @@ function Navbar() {
           />
           <HStack spacing={8} alignItems={"center"}>
             <Box>
-              <Text fontFamily={'monospace'} fontSize={'30px'} color={'purple'}>MERCOR</Text>
+              <Text onClick={gotoHome} fontFamily={"monospace"} fontSize={"30px"} color={"purple"} fontWeight={500}>
+                MERCORFORM
+              </Text>
             </Box>
             <HStack
               as={"nav"}
               spacing={4}
               display={{ base: "none", md: "flex" }}
-              color={'purple'}
-              fontSize={'20px'}
-              fontFamily={'monospace'}
-              
+              color={"purple"}
+              fontSize={"20px"}
+              fontFamily={"monospace"}
+              fontWeight={700}
             >
               {Links.map((link) => (
-                <NavLink  key={link}>{link}</NavLink>
+                <NavLink key={link}>{link}</NavLink>
               ))}
             </HStack>
           </HStack>
@@ -87,11 +93,13 @@ function Navbar() {
             <Stack spacing={4} direction="row" align="center">
               {!isLoggedIn ? (
                 <>
+                
                   <Button
                     colorScheme="purple"
                     size="md"
                     onClick={GotoLoginSinginPage}
-                    fontFamily={'monospace'}
+                    fontFamily={"monospace"}
+                    m={2}
                   >
                     Login
                   </Button>
@@ -99,22 +107,28 @@ function Navbar() {
                     colorScheme="purple"
                     size="md"
                     onClick={GotoLoginSinginPage}
-                    fontFamily={'monospace'}
+                    fontFamily={"monospace"}
+                    m={2}
                   >
                     Signup
                   </Button>
                 </>
               ) : (
-                <Button   colorScheme="purple"
-                size="md"  
-                fontFamily={'monospace'} onClick={Logout}>Logout</Button>
+                <Button
+                  colorScheme="purple"
+                  size="md"
+                  fontFamily={"monospace"}
+                  onClick={Logout}
+                >
+                  Logout
+                </Button>
               )}
             </Stack>
           </Flex>
         </Flex>
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
+            <Stack as={"nav"} spacing={4} color={"purple"} fontSize={"15px"} fontWeight={700}>
               {Links.map((link) => (
                 <NavLink key={link}>{link}</NavLink>
               ))}

@@ -52,14 +52,12 @@ function FormResponse() {
         const body = {
           email: userEmail,
         };
-        console.log("api calling");
         const headers = {
           "Content-Type": "application/json",
         };
         axios
           .post(endpointUrl, body, { headers })
           .then((response) => {
-            console.log(response.data.data);
             if (response.data.data != null) {
               setSendData(response.data.data);
             } else {
@@ -67,6 +65,7 @@ function FormResponse() {
             }
           })
           .catch((error) => {
+            alert(error.message);
             console.error("Error:", error);
           });
       }
@@ -95,9 +94,12 @@ function FormResponse() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const responseId = params.id;
-    sendData.email = userEmail;
-    console.log("send data", sendData);
-    addingFormResponse(sendData, responseId);
+    if(userEmail==""){
+     alert("Please enter_email");
+    }else{
+      sendData.email = userEmail;
+      addingFormResponse(sendData, responseId);
+    }
   };
 
   //Login with Google
@@ -153,8 +155,8 @@ function FormResponse() {
           };
         });
 
-        console.log("getting file response", res);
       } catch (err) {
+        alert(err.message);
         console.error("Failed to upload image:", err);
       }
     }

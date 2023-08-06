@@ -59,7 +59,6 @@ function SettingForm() {
         axios
           .get(endpointUrl, { headers })
           .then((response) => {
-            console.log(response.data.data);
             let obj = {
               allTimeAccess: false,
               startDateTime: "",
@@ -88,6 +87,7 @@ function SettingForm() {
             setObjState(obj);
           })
           .catch((error) => {
+            alert(error.message);
             console.error("Error:", error);
           });
       }

@@ -64,7 +64,6 @@ function CreateEditForm() {
       const endpointUrl = `http://localhost:5000/form/getbyid/${formId}`;
       const token = localStorage.getItem("token");
       if (Object.keys(sendData).length == 0) {
-        console.log("api calling");
         const headers = {
           "auth-token": token,
           "Content-Type": "application/json",
@@ -72,10 +71,10 @@ function CreateEditForm() {
         axios
           .get(endpointUrl, { headers })
           .then((response) => {
-            console.log(response.data.data);
             setSendData(response.data.data);
           })
           .catch((error) => {
+            alert(error.message);
             console.error("Error:", error);
           });
       }
@@ -231,7 +230,6 @@ function CreateEditForm() {
   const getCurrentLink = (formId) => {
     const endpointUrl = `http://localhost:5000/form/getformlink/${formId}`;
     const token = localStorage.getItem("token");
-    console.log("api calling");
     const headers = {
       "auth-token": token,
       "Content-Type": "application/json",
@@ -242,6 +240,7 @@ function CreateEditForm() {
         setValue(response.data.data);
       })
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
   };

@@ -68,11 +68,11 @@ function ResponseForm() {
         axios
           .get(endpointUrl, { headers })
           .then((response) => {
-            console.log(response.data.data);
             setResponses(response.data.data);
             setTotalResponse(response.data.data.length);
           })
           .catch((error) => {
+            alert(error.message);
             console.error("Error:", error);
           });
       }

@@ -12,11 +12,11 @@ const UserState = (props) => {
   //Login with Google
   const Login = useGoogleLogin({
     onSuccess: (codeResponse) => {
-      console.log("Login success", codeResponse);
       setUser(codeResponse);
     },
     onError: (error) => {
-      console.log("Login Failed:", error);
+      alert(error);
+      console.log('error: ' ,error)
     },
   });
 
@@ -49,7 +49,9 @@ const UserState = (props) => {
               });
           }
         })
-        .catch((err) => console.log("Error :", err));
+        .catch((err) =>{
+          alert(err.message);
+         console.log("Error :", err)});
     }
   };
 
@@ -66,6 +68,7 @@ const UserState = (props) => {
         setProfile(res.data.profile[0]);
       })
       .catch((err) => {
+        alert(err.message);
         console.log("Error :", err);
       });
   };
@@ -73,7 +76,6 @@ const UserState = (props) => {
   //Login with Google
   const LoginForReponse = useGoogleLogin({
     onSuccess: (user) => {
-      console.log("Login success", user);
       if (user.access_token != null) {
         axios
           .get(
@@ -86,14 +88,14 @@ const UserState = (props) => {
             }
           )
           .then((res) => {
-            if (res) {
-              console.log(res);
-            }
           })
-          .catch((err) => console.log("Error :", err));
+          .catch((err) => {   
+             alert(err.message);
+            console.log("Error :", err)});
       }
     },
     onError: (error) => {
+      alert(error.message);
       console.log("Login Failed:", error);
     },
   });

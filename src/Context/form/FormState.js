@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const FormState = (props) => {
-
   const [currentObjFilled, setCurrentObjFilled] = useState({
     Obj: {
       name: "",
@@ -44,14 +43,11 @@ const FormState = (props) => {
 
         //Save it to localStorage
         GetFormDataById(response.data.data._id);
-        console.log("Response:", response.data);
       })
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
-
-    console.log("Create Form called");
-    console.log(data);
   };
 
   //Update Form data
@@ -66,21 +62,17 @@ const FormState = (props) => {
     axios
       .put(endpointUrl, dataToSend, { headers })
       .then((response) => {
-        console.log("Response:", response.data);
-
         //Save data in local storage and get update form data
         GetFormDataById(response.data.data._id);
       })
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
-    console.log("Update Form called");
-    console.log(data);
   };
 
   //GetById form data and save it in local storage for data persistence
   const GetFormDataById = (Id) => {
-    console.log("call GetFormDataById function");
     const endpointUrl = `http://localhost:5000/form/getbyid/${Id}`;
     const token = localStorage.getItem("token");
 
@@ -95,6 +87,7 @@ const FormState = (props) => {
         setCurrentObjFilled(response.data.data);
       })
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
   };
@@ -110,14 +103,12 @@ const FormState = (props) => {
     axios
       .get(endpointUrl, { headers })
       .then((response) => {
-        console.log("Response:", response.data);
         setRecentForm(response.data.data);
       })
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
-
-    console.log("Get Recents Form called");
   };
 
   //GetName
@@ -131,19 +122,16 @@ const FormState = (props) => {
     axios
       .get(endpointUrl, { headers })
       .then((response) => {
-        console.log("Response:", response.data);
         setName(response.data.data);
       })
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
-
-    console.log("Get Recents Form called");
   };
 
   //GetById form data and save it in local storage for data persistence
   const GetFormSetting = (Id) => {
-    
     const endpointUrl = `http://localhost:5000/form/getformsetting/${Id}`;
     const token = localStorage.getItem("token");
 
@@ -183,6 +171,7 @@ const FormState = (props) => {
         setFormSetting(obj);
       })
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
   };
@@ -198,17 +187,15 @@ const FormState = (props) => {
     };
     axios
       .put(endpointUrl, dataToSend, { headers })
-      .then((response) => {
-        console.log("Response:", response.data);
-      })
+      .then((response) => {})
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
-    console.log("Update Form  setting called");
-  }
+  };
 
   //update form Status
-  const updateFormStatus=(obj)=>{
+  const updateFormStatus = (obj) => {
     const endpointUrl = "http://localhost:5000/form/updateformstatus";
     const dataToSend = obj;
     const token = localStorage.getItem("token");
@@ -218,17 +205,15 @@ const FormState = (props) => {
     };
     axios
       .put(endpointUrl, dataToSend, { headers })
-      .then((response) => {
-        console.log("Response:", response.data);
-      })
+      .then((response) => {})
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
-    console.log("Update Form  status called");
-  }
+  };
 
   //delete form
-  const deleteForm=(formId)=>{
+  const deleteForm = (formId) => {
     const endpointUrl = `http://localhost:5000/form/deleteform/${formId}`;
     const token = localStorage.getItem("token");
     const headers = {
@@ -237,35 +222,30 @@ const FormState = (props) => {
     };
     axios
       .delete(endpointUrl, { headers })
-      .then((response) => {
-        console.log("Response:", response.data);
-      })
+      .then((response) => {})
       .catch((error) => {
+        alert(error.message);
         console.error("Error:", error);
       });
-    console.log("Update Form  status called");
-  }
+  };
 
-    //update form Status
-    const addingFormResponse=(obj,responseId)=>{
-      const endpointUrl = `http://localhost:5000/form/addformresponse/${responseId}`;
-      const dataToSend = obj;
-      const token = localStorage.getItem("token");
-      const headers = {
-        "auth-token": token,
-        "Content-Type": "application/json",
-      };
-      axios
-        .post(endpointUrl, dataToSend, { headers })
-        .then((response) => {
-          console.log("Response:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-      console.log("adding form response called");
-    }
-
+  //update form Status
+  const addingFormResponse = (obj, responseId) => {
+    const endpointUrl = `http://localhost:5000/form/addformresponse/${responseId}`;
+    const dataToSend = obj;
+    const token = localStorage.getItem("token");
+    const headers = {
+      "auth-token": token,
+      "Content-Type": "application/json",
+    };
+    axios
+      .post(endpointUrl, dataToSend, { headers })
+      .then((response) => {})
+      .catch((error) => {
+        alert(error.message);
+        console.error("Error:", error);
+      });
+  };
 
   return (
     <FormContext.Provider
@@ -283,7 +263,7 @@ const FormState = (props) => {
         updateFormSetting,
         updateFormStatus,
         deleteForm,
-        addingFormResponse
+        addingFormResponse,
       }}
     >
       {props.children}
