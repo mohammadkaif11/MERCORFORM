@@ -47,7 +47,7 @@ function FormResponse() {
     }
     if (userEmail != "") {
       const responseId = params.id;
-      const endpointUrl = `http://localhost:5000/form/getform/${responseId}`;
+      const endpointUrl = `https://mercorformbackend.onrender.com/form/getform/${responseId}`;
       if (Object.keys(sendData).length == 0 && errorMsg === "") {
         const body = {
           email: userEmail,
@@ -133,7 +133,7 @@ function FormResponse() {
   //Upload file and get unique link
   const UploadFile = async (index) => {
     if (sendData.fields[index].file != null) {
-      const endpointUrl = "http://localhost:5000/form/upload";
+      const endpointUrl = "https://mercorformbackend.onrender.com/form/upload";
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("file", sendData.fields[index].file);

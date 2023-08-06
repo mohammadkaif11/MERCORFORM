@@ -36,7 +36,7 @@ function ResponseFormById() {
 
   //useEffect for getting current response of user
   useEffect(() => {
-    const endpointUrl = `http://localhost:5000/form/getanswerbyid/${params.id}`;
+    const endpointUrl = `https://mercorformbackend.onrender.com/form/getanswerbyid/${params.id}`;
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");

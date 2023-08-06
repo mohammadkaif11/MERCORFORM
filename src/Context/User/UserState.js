@@ -37,7 +37,7 @@ const UserState = (props) => {
           if (res) {
             const Postdata = { profile: JSON.stringify(res.data) };
             axios
-              .post("http://localhost:5000/users/login", Postdata)
+              .post("https://mercorformbackend.onrender.com/users/login", Postdata)
               .then((res) => {
                 setProfile(res.data.profile);
                 if (res.data.token != "") {
@@ -63,7 +63,7 @@ const UserState = (props) => {
       },
     };
     axios
-      .get("http://localhost:5000/users/getprofile", config)
+      .get("https://mercorformbackend.onrender.com/users/getprofile", config)
       .then((res) => {
         setProfile(res.data.profile[0]);
       })

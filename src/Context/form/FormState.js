@@ -1,6 +1,5 @@
 import FormContext from "./FormContext";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const FormState = (props) => {
@@ -29,7 +28,7 @@ const FormState = (props) => {
 
   //Create Form data
   const CreateForm = (data) => {
-    const endpointUrl = "http://localhost:5000/form/create";
+    const endpointUrl = "https://mercorformbackend.onrender.com/form/create";
     const dataToSend = data;
     const token = localStorage.getItem("token");
     const headers = {
@@ -52,7 +51,7 @@ const FormState = (props) => {
 
   //Update Form data
   const UpdateForm = (data) => {
-    const endpointUrl = "http://localhost:5000/form/update";
+    const endpointUrl = "https://mercorformbackend.onrender.com/form/update";
     const dataToSend = data;
     const token = localStorage.getItem("token");
     const headers = {
@@ -73,7 +72,7 @@ const FormState = (props) => {
 
   //GetById form data and save it in local storage for data persistence
   const GetFormDataById = (Id) => {
-    const endpointUrl = `http://localhost:5000/form/getbyid/${Id}`;
+    const endpointUrl = `https://mercorformbackend.onrender.com/form/getbyid/${Id}`;
     const token = localStorage.getItem("token");
 
     const headers = {
@@ -94,7 +93,7 @@ const FormState = (props) => {
 
   //Create Form data
   const GetRecentForms = () => {
-    const endpointUrl = "http://localhost:5000/form/getrecentForms";
+    const endpointUrl = "https://mercorformbackend.onrender.com/form/getrecentForms";
     const token = localStorage.getItem("token");
     const headers = {
       "auth-token": token,
@@ -113,7 +112,7 @@ const FormState = (props) => {
 
   //GetName
   const GetName = () => {
-    const endpointUrl = "http://localhost:5000/form/getName";
+    const endpointUrl = "https://mercorformbackend.onrender.com/form/getName";
     const token = localStorage.getItem("token");
     const headers = {
       "auth-token": token,
@@ -132,7 +131,7 @@ const FormState = (props) => {
 
   //GetById form data and save it in local storage for data persistence
   const GetFormSetting = (Id) => {
-    const endpointUrl = `http://localhost:5000/form/getformsetting/${Id}`;
+    const endpointUrl = `https://mercorformbackend.onrender.com/form/getformsetting/${Id}`;
     const token = localStorage.getItem("token");
 
     const headers = {
@@ -178,7 +177,7 @@ const FormState = (props) => {
 
   //Updating form settings
   const updateFormSetting = (obj) => {
-    const endpointUrl = "http://localhost:5000/form/updateformsetting";
+    const endpointUrl = "https://mercorformbackend.onrender.com/form/updateformsetting";
     const dataToSend = obj;
     const token = localStorage.getItem("token");
     const headers = {
@@ -196,7 +195,7 @@ const FormState = (props) => {
 
   //update form Status
   const updateFormStatus = (obj) => {
-    const endpointUrl = "http://localhost:5000/form/updateformstatus";
+    const endpointUrl = "https://mercorformbackend.onrender.com/form/updateformstatus";
     const dataToSend = obj;
     const token = localStorage.getItem("token");
     const headers = {
@@ -214,7 +213,7 @@ const FormState = (props) => {
 
   //delete form
   const deleteForm = (formId) => {
-    const endpointUrl = `http://localhost:5000/form/deleteform/${formId}`;
+    const endpointUrl = `https://mercorformbackend.onrender.com/form/deleteform/${formId}`;
     const token = localStorage.getItem("token");
     const headers = {
       "auth-token": token,
@@ -231,7 +230,7 @@ const FormState = (props) => {
 
   //update form Status
   const addingFormResponse = (obj, responseId) => {
-    const endpointUrl = `http://localhost:5000/form/addformresponse/${responseId}`;
+    const endpointUrl = `https://mercorformbackend.onrender.com/form/addformresponse/${responseId}`;
     const dataToSend = obj;
     const token = localStorage.getItem("token");
     const headers = {

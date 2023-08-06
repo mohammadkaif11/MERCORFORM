@@ -49,7 +49,7 @@ function SettingForm() {
     }
 
     if (formId && token) {
-      const endpointUrl = `http://localhost:5000/form/getformsetting/${formId}`;
+      const endpointUrl = `https://mercorformbackend.onrender.com/form/getformsetting/${formId}`;
       const token = localStorage.getItem("token");
       if (Object.keys(objState).length === 0) {
         const headers = {

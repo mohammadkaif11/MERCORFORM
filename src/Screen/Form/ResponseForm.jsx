@@ -58,7 +58,7 @@ function ResponseForm() {
       navigate("/login");
     }
     if (formId && token) {
-      const endpointUrl = `http://localhost:5000/form/getallresponse/${formId}`;
+      const endpointUrl = `https://mercorformbackend.onrender.com/form/getallresponse/${formId}`;
       const token = localStorage.getItem("token");
       if (responses.length == 0 && totalResponse == 0) {
         const headers = {

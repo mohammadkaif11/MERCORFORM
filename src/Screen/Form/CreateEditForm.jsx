@@ -56,12 +56,12 @@ function CreateEditForm() {
         getCurrentLink(formId);
       } else {
         //set default form link value if form is not saved
-        setValue("http://localhost:3000/login");
+        setValue("https://mercorform.vercel.app/login");
       }
     }
 
     if (formId && token) {
-      const endpointUrl = `http://localhost:5000/form/getbyid/${formId}`;
+      const endpointUrl = `https://mercorformbackend.onrender.com/form/getbyid/${formId}`;
       const token = localStorage.getItem("token");
       if (Object.keys(sendData).length == 0) {
         const headers = {
@@ -228,7 +228,7 @@ function CreateEditForm() {
 
   //------------------------------Set current link for form--------------------------------
   const getCurrentLink = (formId) => {
-    const endpointUrl = `http://localhost:5000/form/getformlink/${formId}`;
+    const endpointUrl = `https://mercorformbackend.onrender.com/form/getformlink/${formId}`;
     const token = localStorage.getItem("token");
     const headers = {
       "auth-token": token,
