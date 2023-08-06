@@ -49,9 +49,9 @@ function Navbar() {
     navigate("/login");
   };
 
-  const gotoHome=()=>{
+  const gotoHome = () => {
     navigate("/");
-  }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -71,29 +71,36 @@ function Navbar() {
           />
           <HStack spacing={8} alignItems={"center"}>
             <Box>
-              <Text onClick={gotoHome} fontFamily={"monospace"} fontSize={"30px"} color={"purple"} fontWeight={500}>
+              <Text
+                onClick={gotoHome}
+                fontFamily={"monospace"}
+                fontSize={"30px"}
+                color={"purple"}
+                fontWeight={500}
+              >
                 MERCORFORM
               </Text>
             </Box>
-            <HStack
-              as={"nav"}
-              spacing={4}
-              display={{ base: "none", md: "flex" }}
-              color={"purple"}
-              fontSize={"20px"}
-              fontFamily={"monospace"}
-              fontWeight={700}
-            >
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </HStack>
+            {isLoggedIn ? (
+              <HStack
+                as={"nav"}
+                spacing={4}
+                display={{ base: "none", md: "flex" }}
+                color={"purple"}
+                fontSize={"20px"}
+                fontFamily={"monospace"}
+                fontWeight={700}
+              >
+                {Links.map((link) => (
+                  <NavLink key={link}>{link}</NavLink>
+                ))}
+              </HStack>
+            ) : null}
           </HStack>
           <Flex alignItems={"center"}>
             <Stack spacing={4} direction="row" align="center">
               {!isLoggedIn ? (
                 <>
-                
                   <Button
                     colorScheme="purple"
                     size="md"
@@ -128,7 +135,13 @@ function Navbar() {
         </Flex>
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4} color={"purple"} fontSize={"15px"} fontWeight={700}>
+            <Stack
+              as={"nav"}
+              spacing={4}
+              color={"purple"}
+              fontSize={"15px"}
+              fontWeight={700}
+            >
               {Links.map((link) => (
                 <NavLink key={link}>{link}</NavLink>
               ))}
