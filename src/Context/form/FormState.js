@@ -265,24 +265,6 @@ const FormState = (props) => {
       console.log("adding form response called");
     }
 
-    const handleDrop = async (acceptedFiles) => {
-      const formData = new FormData();
-      formData.append('image', acceptedFiles[0]);
-  
-      try {
-        const res = await axios.post('/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-  
-        setImageUrl(res.data.imageUrl);
-        setPublicId(res.data.publicId);
-      } catch (err) {
-        console.error('Failed to upload image:', err);
-      }
-    };
-  
 
   return (
     <FormContext.Provider
