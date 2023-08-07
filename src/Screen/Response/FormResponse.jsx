@@ -59,7 +59,9 @@ function FormResponse() {
     if (userEmail != "") {
       const responseId = params.id;
       const endpointUrl = `https://mercorformbackend.onrender.com/form/getform/${responseId}`;
-      if (Object.keys(sendData).length == 0 && errorMsg === "") {
+      if (Object.keys(sendData).length == 0 && errorMsg == "") {
+        console.log('send Data is null or empty',sendData)
+        console.log('errorMsg Dat is null or empty',errorMsg)
         const body = {
           email: userEmail,
         };
@@ -81,6 +83,9 @@ function FormResponse() {
             alert(error.message);
             console.error("Error:", error);
           });
+      }else{
+        console.log('send Data is null or empty',sendData)
+        console.log('errorMsg Dat is null or empty',errorMsg)
       }
     }
     
