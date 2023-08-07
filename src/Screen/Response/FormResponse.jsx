@@ -74,13 +74,16 @@ function FormResponse() {
     }
     
     //remove gmail
-    ()=>{
+   return ()=>{
       let localStorageEmail = localStorage.getItem("email");
       if (localStorageEmail){
         localStorage.removeItem("email");
       }
     }
   }, [sendData, errorMsg, userEmail]);
+
+
+  
 
   //handle change value
   const handleChange = (index, event) => {
