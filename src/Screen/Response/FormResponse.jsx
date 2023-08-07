@@ -24,7 +24,6 @@ function FormResponse() {
   const [maxwidth, setMaxwidth] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [isFormSubmit,setIsFormSubmit] = useState(false)
   const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   //useEffect for set device-width
@@ -41,12 +40,12 @@ function FormResponse() {
   //useEffect for set current senddata ,error message,user email
   useEffect(() => {
     let localStorageEmail = localStorage.getItem("email");
-    if (userEmail == "") {
+    if (userEmail == ""  ) {
       if (localStorageEmail) {
         setUserEmail(localStorageEmail);
       }
     }
-    if (userEmail != "" ) {
+    if (userEmail != "") {
       const responseId = params.id;
       const endpointUrl = `https://mercorformbackend.onrender.com/form/getform/${responseId}`;
       if (Object.keys(sendData).length == 0 && errorMsg === "") {
