@@ -78,6 +78,7 @@ function FormResponse() {
       let localStorageEmail = localStorage.getItem("email");
       if (localStorageEmail){
         localStorage.removeItem("email");
+        setUserEmail("");
       }
     }
   }, [sendData, errorMsg, userEmail]);
