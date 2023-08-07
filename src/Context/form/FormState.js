@@ -232,9 +232,7 @@ const FormState = (props) => {
   const addingFormResponse = (obj, responseId) => {
     const endpointUrl = `https://mercorformbackend.onrender.com/form/addformresponse/${responseId}`;
     const dataToSend = obj;
-    const token = localStorage.getItem("token");
     const headers = {
-      "auth-token": token,
       "Content-Type": "application/json",
     };
     axios

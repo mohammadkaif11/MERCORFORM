@@ -134,14 +134,12 @@ function FormResponse() {
   const UploadFile = async (index) => {
     if (sendData.fields[index].file != null) {
       const endpointUrl = "https://mercorformbackend.onrender.com/form/upload";
-      const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("file", sendData.fields[index].file);
 
       try {
         const res = await axios.post(endpointUrl, formData, {
           headers: {
-            "auth-token": token,
             "Content-Type": "multipart/form-data",
           },
         });
