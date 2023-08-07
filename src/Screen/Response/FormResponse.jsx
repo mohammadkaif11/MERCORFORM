@@ -59,8 +59,10 @@ function FormResponse() {
           .post(endpointUrl, body, { headers })
           .then((response) => {
             if (response.data.data != null) {
+              console.log(response.data.data)
               setSendData(response.data.data);
             } else {
+              console.log(response.data.data)
               setErrorMsg(response.data.Msg);
             }
           })
@@ -68,6 +70,14 @@ function FormResponse() {
             alert(error.message);
             console.error("Error:", error);
           });
+      }
+    }
+    
+    //remove gmail
+    ()=>{
+      let localStorageEmail = localStorage.getItem("email");
+      if (localStorageEmail){
+        localStorage.removeItem("email");
       }
     }
   }, [sendData, errorMsg, userEmail]);
