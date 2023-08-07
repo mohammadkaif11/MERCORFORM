@@ -26,6 +26,17 @@ function FormResponse() {
   const [userEmail, setUserEmail] = useState("");
   const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
+
+  //useEffect for removing userEmail run one
+  useEffect(() => {
+    let localStorageEmail = localStorage.getItem("email");
+    if(localStorageEmail){
+      localStorage.removeItem("email");
+      setUserEmail("")
+    }
+
+  }, [])
+  
   //useEffect for set device-width
   useEffect(() => {
     if (isSmallerThan1024) {
@@ -74,13 +85,6 @@ function FormResponse() {
     }
     
     //remove gmail
-   return ()=>{
-      let localStorageEmail = localStorage.getItem("email");
-      if (localStorageEmail){
-        localStorage.removeItem("email");
-        setUserEmail("");
-      }
-    }
   }, [sendData, errorMsg, userEmail]);
 
 
