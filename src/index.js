@@ -6,10 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
+const googleClientId=process.env.GOOGLE_CLIENT_ID;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <GoogleOAuthProvider clientId="1001041294556-4gh0mmubqphu0otihqmjpesjnkgovef8.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId={googleClientId}>
     <React.StrictMode>
       <ChakraProvider>
         <BrowserRouter>
